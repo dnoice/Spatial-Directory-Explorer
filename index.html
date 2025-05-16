@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spatial Directory Explorer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <meta name="description" content="An innovative spatial directory explorer with zoomable navigation">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">
+                <i class="fas fa-project-diagram"></i>
+                <h1>Spatial Explorer</h1>
+            </div>
+            <div class="header-controls">
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Search files and directories...">
+                    <button id="search-clear" class="search-clear">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="view-controls">
+                    <button id="zoom-out" class="control-btn" title="Zoom Out">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button id="zoom-in" class="control-btn" title="Zoom In">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button id="reset-view" class="control-btn" title="Reset View">
+                        <i class="fas fa-home"></i>
+                    </button>
+                    <button id="theme-toggle" class="control-btn" title="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <nav class="breadcrumb-nav">
+            <div class="breadcrumb-container" id="breadcrumb-container">
+                <!-- Breadcrumb components will be added here dynamically -->
+                <div class="breadcrumb-item home-crumb">
+                    <i class="fas fa-home"></i>
+                    <span>root</span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="spatial-view-container">
+            <div class="spatial-view" id="spatial-view">
+                <!-- The main spatial view where directories will be rendered -->
+                <div class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p>Loading directory structure...</p>
+                </div>
+            </div>
+            
+            <div class="context-panel" id="context-panel">
+                <!-- Details panel that shows information about the selected item -->
+                <div class="panel-header">
+                    <h2>Item Details</h2>
+                    <button class="panel-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="panel-content">
+                    <div class="panel-section">
+                        <h3>Select an item to view details</h3>
+                        <p>Click on any file or directory to see its information here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mini-map" id="mini-map">
+            <!-- A small overview map showing where you are in the file system -->
+            <div class="mini-map-viewport"></div>
+        </div>
+
+        <footer class="app-footer">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <i class="fas fa-folder"></i>
+                    <span id="dir-count">0 directories</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-file"></i>
+                    <span id="file-count">0 files</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-hdd"></i>
+                    <span id="total-size">0 MB</span>
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="#" id="show-settings">Settings</a>
+                <a href="#" id="show-bookmarks">Bookmarks</a>
+                <a href="#" id="show-help">Help</a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h3>Appearance</h3>
+                    <div class="setting-item">
+                        <label for="theme-select">Theme</label>
+                        <select id="theme-select">
+                            <option value="auto">Auto (System)</option>
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="animation-speed">Animation Speed</label>
+                        <select id="animation-speed">
+                            <option value="fast">Fast</option>
+                            <option value="normal">Normal</option>
+                            <option value="slow">Slow</option>
+                            <option value="off">Off</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Navigation</h3>
+                    <div class="setting-item">
+                        <label for="zoom-behavior">Zoom Behavior</label>
+                        <select id="zoom-behavior">
+                            <option value="smooth">Smooth</option>
+                            <option value="instant">Instant</option>
+                        </select>
+                    </div>
+                    <div class="setting-item checkbox-setting">
+                        <input type="checkbox" id="show-minimap" checked>
+                        <label for="show-minimap">Show Mini-map</label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Performance</h3>
+                    <div class="setting-item checkbox-setting">
+                        <input type="checkbox" id="enable-lazy-loading" checked>
+                        <label for="enable-lazy-loading">Enable Lazy Loading</label>
+                    </div>
+                    <div class="setting-item">
+                        <label for="detail-level">Detail Level</label>
+                        <select id="detail-level">
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="reset-settings" class="btn secondary">Reset to Default</button>
+                <button id="save-settings" class="btn primary">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
