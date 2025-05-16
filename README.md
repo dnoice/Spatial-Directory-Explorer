@@ -2,6 +2,8 @@
 
 **Welcome to the future of file navigation!** 
 
+**Warning** This codebase is still under develpment. It has a great jumping off point and all logic is solid.
+
 Gone are the days of boring, endless tree views that make your eyes glaze over. Say hello to a spatial journey through your files where directories become galaxies waiting to be explored!
 
 ![Spatial Directory Explorer in Action](assets/banner-image.png)
